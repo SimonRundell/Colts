@@ -74,10 +74,11 @@ button:focus-visible {
 /* Component Styles */
 #root {
   --root-padding: 2rem;
-  max-width: 1280px;
+  /* max-width: 1280px; */ /* Removed to allow page-content to control width */
   margin: 0 auto;
   padding: var(--root-padding);
   text-align: center;
+  width: 100%; /* Allow full width */
 }
 
 .logo {
@@ -98,7 +99,7 @@ button:focus-visible {
   /* border: 1px solid #333;
   border-radius: 8px; */
   padding: 1.5rem;
-  max-width: 1400px; /* Match the width of Home and About pages */
+  max-width: 1600px; /* Increased to match visible width on Home/About */
   margin: 0 auto; /* Center the content */
   width: 100%; /* Full width up to max-width */
 }

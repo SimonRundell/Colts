@@ -4,8 +4,8 @@
  * @module utils/fixtureExports
  */
 
-import { jsPDF } from 'jspdf';
-import autoTable from 'jspdf-autotable'; // eslint-disable-line no-unused-vars
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
 import { createEvents } from 'ics';
 import { formatDate, formatTime } from './dateHelpers';
 

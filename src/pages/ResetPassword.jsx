@@ -92,6 +92,8 @@ function ResetPassword() {
     } finally {
       setVerifying(false);
     }
+  }, [token, login]);
+
   useEffect(() => {
     verifyToken();
   }, [verifyToken]);
@@ -176,6 +178,7 @@ function ResetPassword() {
     } catch (err) {
       console.error('Error resetting password:', err);
       setError('An error occurred. Please try again.');
+    } finally {
       setIsLoading(false);
     }
   };

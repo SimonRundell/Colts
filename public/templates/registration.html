@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to Devon RFU Colts League</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .header {
+            background-color: #00a755;
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 28px;
+        }
+        .content {
+            padding: 30px;
+        }
+        .content h2 {
+            color: #00a755;
+            margin-top: 0;
+        }
+        .info-box {
+            background-color: #f8f9fa;
+            border-left: 4px solid #00a755;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        .info-box strong {
+            color: #00a755;
+        }
+        .verify-button {
+            display: inline-block;
+            background-color: #00a755;
+            color: white;
+            padding: 15px 40px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            margin: 20px 0;
+            text-align: center;
+        }
+        .verify-button:hover {
+            background-color: #008c45;
+        }
+        .verification-link {
+            word-break: break-all;
+            background-color: #f8f9fa;
+            padding: 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            color: #666;
+            margin: 10px 0;
+        }
+        .footer {
+            background-color: #f8f9fa;
+            padding: 20px;
+            text-align: center;
+            font-size: 12px;
+            color: #666;
+        }
+        .warning {
+            color: #d9534f;
+            font-weight: bold;
+            margin: 15px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Welcome to Devon RFU Colts League</h1>
+        </div>
+        
+        <div class="content">
+            <h2>Registration Successful!</h2>
+            
+            <p>Dear {{firstName}} {{lastName}},</p>
+            
+            <p>Thank you for registering with Devon RFU Colts League! We're excited to have you join our community of rugby supporters.</p>
+            
+            <div class="info-box">
+                <p><strong>Your Account Details:</strong></p>
+                <p>Name: {{firstName}} {{lastName}}</p>
+                <p>Username: {{login}}</p>
+                <p>Following Team: {{teamName}}</p>
+            </p>
+            </div>
+            
+            <h3>⚠️ Important: Verify Your Email</h3>
+            
+            <p>Before you can log in, you must verify your email address. Click the button below to activate your account:</p>
+            
+            <div style="text-align: center;">
+                <a href="{{verificationLink}}" class="verify-button">Verify My Email Address</a>
+            </div>
+            
+            <p style="font-size: 12px; color: #666;">If the button doesn't work, copy and paste this link into your browser:</p>
+            <div class="verification-link">{{verificationLink}}</div>
+            
+            <p class="warning">⏰ This verification link expires in 24 hours.</p>
+            
+            <h3>What's Next?</h3>
+            
+            <ul>
+                <li>Click the verification link above to activate your account</li>
+                <li>Once verified, you can log in with your username and password</li>
+                <li>Stay updated on {{teamName}}'s fixtures and results</li>
+                <li>Follow the league standings and match reports</li>
+            </ul>
+            
+            <p>If you didn't create this account, please ignore this email.</p>
+            
+            <p>Best regards,<br>
+            <strong>Devon RFU Colts League Administration</strong></p>
+        </div>
+        
+        <div class="footer">
+            <p>© 2025 Devon RFU Colts League. All rights reserved.</p>
+            <p>This is an automated message. Please do not reply to this email.</p>
+        </div>
+    </div>
+</body>
+</html>

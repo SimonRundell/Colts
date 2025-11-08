@@ -1,0 +1,19 @@
+{
+  "images": [
+    "/slideshow/image_01.png",
+    "/slideshow/image_02.png",
+    "/slideshow/image_03.png",
+    "/slideshow/image_04.png",
+    "/slideshow/image_05.png",
+    "/slideshow/image_06.png",
+    "/slideshow/image_07.png",
+    "/slideshow/image_08.png",
+    "/slideshow/image_09.png",
+    "/slideshow/image_10.png",
+    "/slideshow/image_11.png",
+    "/slideshow/image_12.png",
+    "/slideshow/image_13.png"
+  ],
+  "INTERVAL_MS": 5000,
+  "FADE_MS": 3000
+}

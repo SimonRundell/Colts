@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Match Result</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #1c1c1c;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .email-container {
+            max-width: 600px;
+            margin: 20px auto;
+            background-color: #ffffff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        .header {
+            background-color: #00a755;
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 28px;
+        }
+        .content {
+            padding: 30px;
+        }
+        .match-info {
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .score-container {
+            display: table;
+            width: 100%;
+            margin: 20px 0;
+        }
+        .team-section {
+            display: table-cell;
+            width: 45%;
+            text-align: center;
+            vertical-align: middle;
+        }
+        .vs-section {
+            display: table-cell;
+            width: 10%;
+            text-align: center;
+            vertical-align: middle;
+            font-size: 24px;
+            font-weight: bold;
+            color: #666;
+        }
+        .team-logo {
+            max-width: 80px;
+            max-height: 80px;
+            margin: 0 auto 10px;
+        }
+        .team-name {
+            font-size: 18px;
+            font-weight: bold;
+            margin: 10px 0;
+            color: #1c1c1c;
+        }
+        .team-score {
+            font-size: 48px;
+            font-weight: bold;
+            color: #00a755;
+            margin: 10px 0;
+        }
+        .match-details {
+            margin: 20px 0;
+            padding: 15px;
+            background-color: #fff3cd;
+            border-radius: 4px;
+            border-left: 4px solid #ffc107;
+        }
+        .match-details p {
+            margin: 5px 0;
+            color: #1c1c1c;
+        }
+        .scorers-section {
+            margin: 20px 0;
+        }
+        .scorers-section h3 {
+            color: #00a755;
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+        .scorer-item {
+            padding: 8px 0;
+            border-bottom: 1px solid #e9ecef;
+        }
+        .scorer-item:last-child {
+            border-bottom: none;
+        }
+        .footer {
+            background-color: #1c1c1c;
+            color: #f2f2f2;
+            padding: 20px;
+            text-align: center;
+            font-size: 14px;
+        }
+        .footer a {
+            color: #00a755;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="email-container">
+        <div class="header">
+            <h1>🏉 Match Result</h1>
+        </div>
+        
+        <div class="content">
+            <p>Hello {{firstName}},</p>
+            
+            <p>The match result for <strong>{{teamName}}</strong> has been posted:</p>
+            
+            <div class="match-info">
+                <div class="score-container">
+                    <div class="team-section">
+                        {{homeTeamLogo}}
+                        <div class="team-name">{{homeTeamName}}</div>
+                        <div class="team-score">{{homeScore}}</div>
+                    </div>
+                    <div class="vs-section">VS</div>
+                    <div class="team-section">
+                        {{awayTeamLogo}}
+                        <div class="team-name">{{awayTeamName}}</div>
+                        <div class="team-score">{{awayScore}}</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="match-details">
+                <p><strong>League:</strong> {{leagueName}} ({{leagueSeason}})</p>
+                <p><strong>Date:</strong> {{matchDate}}</p>
+                <p><strong>Venue:</strong> {{venue}}</p>
+            </div>
+
+            {{homeScorersSection}}
+            {{awayScorersSection}}
+
+            <p style="margin-top: 30px;">Thank you for following the Devon RFU Colts League!</p>
+        </div>
+        
+        <div class="footer">
+            <p>Devon RFU Colts League</p>
+            <p>This is an automated notification. Please do not reply to this email.</p>
+        </div>
+    </div>
+</body>
+</html>

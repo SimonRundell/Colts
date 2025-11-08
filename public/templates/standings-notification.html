@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>League Standings Update</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #1c1c1c;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .email-container {
+            max-width: 700px;
+            margin: 20px auto;
+            background-color: #ffffff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        .header {
+            background-color: #00a755;
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 28px;
+        }
+        .content {
+            padding: 30px;
+        }
+        .league-section {
+            margin: 30px 0;
+        }
+        .league-title {
+            background-color: #1c1c1c;
+            color: white;
+            padding: 15px;
+            border-radius: 6px;
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+        .standings-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            background-color: #ffffff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .standings-table thead {
+            background-color: #00a755;
+            color: white;
+        }
+        .standings-table th {
+            padding: 12px 8px;
+            text-align: center;
+            font-size: 13px;
+            font-weight: bold;
+        }
+        .standings-table td {
+            padding: 10px 8px;
+            text-align: center;
+            border-bottom: 1px solid #e9ecef;
+            font-size: 14px;
+        }
+        .standings-table tbody tr:hover {
+            background-color: #f8f9fa;
+        }
+        .standings-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+        .team-name {
+            text-align: left;
+            font-weight: bold;
+        }
+        .position-cell {
+            font-weight: bold;
+            color: #00a755;
+            font-size: 16px;
+        }
+        .highlight-row {
+            background-color: #fff3cd;
+        }
+        .update-info {
+            margin: 20px 0;
+            padding: 15px;
+            background-color: #e7f3ff;
+            border-radius: 4px;
+            border-left: 4px solid #0066cc;
+        }
+        .update-info p {
+            margin: 5px 0;
+            color: #1c1c1c;
+        }
+        .footer {
+            background-color: #1c1c1c;
+            color: #f2f2f2;
+            padding: 20px;
+            text-align: center;
+            font-size: 14px;
+        }
+        .footer a {
+            color: #00a755;
+            text-decoration: none;
+        }
+        @media (max-width: 600px) {
+            .standings-table th,
+            .standings-table td {
+                padding: 8px 4px;
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="email-container">
+        <div class="header">
+            <h1>📊 League Standings Update</h1>
+        </div>
+        
+        <div class="content">
+            <p>Hello {{firstName}},</p>
+            
+            <p>The league standings have been updated. Here are the current tables for the <strong>{{season}}</strong> season:</p>
+
+            <div class="update-info">
+                <p><strong>📅 Updated:</strong> {{updateDate}}</p>
+                <p><strong>🏉 Season:</strong> {{season}}</p>
+            </div>
+
+            {{leagueTables}}
+
+            <p style="margin-top: 30px;">
+                <strong>Key:</strong><br>
+                P = Played | W = Won | D = Drawn | L = Lost | PF = Points For | PA = Points Against | PD = Points Difference | BP = Bonus Points | Pts = Total Points
+            </p>
+
+            <p style="margin-top: 20px;">Thank you for following the Devon RFU Colts League!</p>
+        </div>
+        
+        <div class="footer">
+            <p>Devon RFU Colts League</p>
+            <p>This is an automated notification. Please do not reply to this email.</p>
+        </div>
+    </div>
+</body>
+</html>

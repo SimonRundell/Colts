@@ -1,11 +1,12 @@
 /**
  * @file Fixtures.jsx
- * @description Fixtures page showing upcoming and past matches
+ * @description Fixtures page showing upcoming and past matches with PDF and calendar export
  * @module pages/Fixtures
  */
 
 import React, { useState, useEffect } from 'react';
 import { publicRead } from '../utils/authHelpers';
+import { generateLeagueFixturesPDF, generateTeamCalendar, getCurrentSeason } from '../utils/fixtureExports';
 
 /**
  * Fixtures component - displays match schedule
@@ -32,10 +33,28 @@ function Fixtures() {
   const [pastFixtures, setPastFixtures] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
+  
+  // Store raw data for exports
+  const [allFixtures, setAllFixtures] = useState([]);
+  const [allTeams, setAllTeams] = useState([]);
+  const [allLeagues, setAllLeagues] = useState([]);
+  const [currentSeason, setCurrentSeason] = useState('');
+  const [showExportMenu, setShowExportMenu] = useState(false);
+  const [selectedTeam, setSelectedTeam] = useState('');
 
   useEffect(() => {
     fetchFixtures();
+    loadCurrentSeason();
   }, []);
+
+  /**
+   * Load current season from config
+   * @async
+   */
+  const loadCurrentSeason = async () => {
+    const season = await getCurrentSeason();
+    setCurrentSeason(season);
+  };
 
   /**
    * Fetches fixtures, teams, and leagues data
@@ -84,6 +103,11 @@ function Fixtures() {
       let fixtures = fixturesResult.data.records || fixturesResult.data;
       let teams = teamsResult.data.records || teamsResult.data;
       let leagues = leaguesResult.data.records || leaguesResult.data;
+
+      // Store raw data for exports
+      setAllFixtures(fixtures);
+      setAllTeams(teams);
+      setAllLeagues(leagues);
 
       // Create lookup maps
       const teamMap = {};
@@ -150,6 +174,52 @@ function Fixtures() {
       hour: '2-digit',
       minute: '2-digit'
     });
+  };
+
+  /**
+   * Handle PDF export for all leagues
+   */
+  const handlePDFExport = () => {
+    if (!currentSeason || allFixtures.length === 0) {
+      alert('No fixtures available for export');
+      return;
+    }
+    generateLeagueFixturesPDF(allFixtures, allLeagues, allTeams, currentSeason);
+  };
+
+  /**
+   * Handle calendar export for selected team
+   */
+  const handleCalendarExport = () => {
+    if (!selectedTeam) {
+      alert('Please select a team');
+      return;
+    }
+
+    const team = allTeams.find(t => t.id === parseInt(selectedTeam));
+    if (!team) {
+      alert('Team not found');
+      return;
+    }
+
+    // Create team name map
+    const teamMap = {};
+    allTeams.forEach(t => {
+      teamMap[t.id] = t.teamName;
+    });
+
+    // Add league info to fixtures for calendar
+    const fixturesWithLeague = allFixtures.map(f => {
+      const league = allLeagues.find(l => l.id === f.leagueID);
+      return {
+        ...f,
+        leagueName: league?.leagueName || 'Unknown'
+      };
+    });
+
+    generateTeamCalendar(fixturesWithLeague, team.id, team.teamName, teamMap);
+    setShowExportMenu(false);
+    setSelectedTeam('');
   };
 
   const getStatusLabel = (status) => {
@@ -227,6 +297,113 @@ function Fixtures() {
     <div className="page-content">
       {/* <h2>Fixtures</h2> */}
       
+      {/* Export Controls */}
+      <div style={{ 
+        marginBottom: '20px', 
+        padding: '15px', 
+        backgroundColor: '#f8f9fa', 
+        borderRadius: '8px',
+        display: 'flex',
+        gap: '15px',
+        alignItems: 'center',
+        flexWrap: 'wrap'
+      }}>
+        <h3 style={{ margin: 0, fontSize: '16px', color: '#333' }}>Export Fixtures:</h3>
+        
+        <button
+          onClick={handlePDFExport}
+          style={{
+            padding: '8px 16px',
+            backgroundColor: '#00a755',
+            color: 'white',
+            border: 'none',
+            borderRadius: '4px',
+            cursor: 'pointer',
+            fontSize: '14px',
+            fontWeight: '500'
+          }}
+          disabled={isLoading || allFixtures.length === 0}
+        >
+          📄 Download PDF (All Leagues)
+        </button>
+
+        <button
+          onClick={() => setShowExportMenu(!showExportMenu)}
+          style={{
+            padding: '8px 16px',
+            backgroundColor: '#0066cc',
+            color: 'white',
+            border: 'none',
+            borderRadius: '4px',
+            cursor: 'pointer',
+            fontSize: '14px',
+            fontWeight: '500'
+          }}
+          disabled={isLoading || allTeams.length === 0}
+        >
+          📅 Export Team Calendar
+        </button>
+
+        {showExportMenu && (
+          <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+            <select
+              value={selectedTeam}
+              onChange={(e) => setSelectedTeam(e.target.value)}
+              style={{
+                padding: '8px',
+                borderRadius: '4px',
+                border: '1px solid #ccc',
+                fontSize: '14px'
+              }}
+            >
+              <option value="">Select a team...</option>
+              {allTeams
+                .sort((a, b) => a.teamName.localeCompare(b.teamName))
+                .map(team => (
+                  <option key={team.id} value={team.id}>
+                    {team.teamName}
+                  </option>
+                ))}
+            </select>
+            
+            <button
+              onClick={handleCalendarExport}
+              style={{
+                padding: '8px 16px',
+                backgroundColor: '#00a755',
+                color: 'white',
+                border: 'none',
+                borderRadius: '4px',
+                cursor: 'pointer',
+                fontSize: '14px',
+                fontWeight: '500'
+              }}
+              disabled={!selectedTeam}
+            >
+              Generate .ics
+            </button>
+            
+            <button
+              onClick={() => {
+                setShowExportMenu(false);
+                setSelectedTeam('');
+              }}
+              style={{
+                padding: '8px 16px',
+                backgroundColor: '#dc3545',
+                color: 'white',
+                border: 'none',
+                borderRadius: '4px',
+                cursor: 'pointer',
+                fontSize: '14px'
+              }}
+            >
+              Cancel
+            </button>
+          </div>
+        )}
+      </div>
+
       <div className="fixtures-container">
         <section className="fixtures-section">
           <h3>Upcoming Fixtures</h3>

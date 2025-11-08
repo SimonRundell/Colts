@@ -4,10 +4,74 @@
  * @module utils/fixtureExports
  */
 
-import jsPDF from 'jspdf';
-import 'jspdf-autotable';
+import { jsPDF } from 'jspdf';
 import { createEvents } from 'ics';
 import { formatDate, formatTime } from './dateHelpers';
+
+/**
+ * Draw a table manually on PDF
+ * @param {jsPDF} doc - PDF document
+ * @param {Array} headers - Table headers
+ * @param {Array} data - Table data rows
+ * @param {number} startY - Starting Y position
+ * @param {Array} columnWidths - Width of each column
+ */
+const drawTable = (doc, headers, data, startY, columnWidths) => {
+  const startX = 10;
+  const rowHeight = 8;
+  const headerHeight = 10;
+  let currentY = startY;
+
+  // Draw header
+  doc.setFillColor(0, 167, 85); // Devon RFU green
+  doc.setTextColor(255, 255, 255);
+  doc.setFontSize(10);
+  doc.setFont(undefined, 'bold');
+  
+  let currentX = startX;
+  headers.forEach((header, i) => {
+    doc.rect(currentX, currentY, columnWidths[i], headerHeight, 'F');
+    doc.text(header, currentX + 2, currentY + 7);
+    currentX += columnWidths[i];
+  });
+  
+  currentY += headerHeight;
+  
+  // Draw data rows
+  doc.setTextColor(0, 0, 0);
+  doc.setFont(undefined, 'normal');
+  doc.setFontSize(9);
+  
+  data.forEach((row, rowIndex) => {
+    currentX = startX;
+    
+    // Check if we need a new page
+    if (currentY + rowHeight > 280) {
+      doc.addPage();
+      currentY = 20;
+    }
+    
+    // Alternate row colors
+    if (rowIndex % 2 === 0) {
+      doc.setFillColor(245, 245, 245);
+      let totalWidth = columnWidths.reduce((a, b) => a + b, 0);
+      doc.rect(startX, currentY, totalWidth, rowHeight, 'F');
+    }
+    
+    row.forEach((cell, i) => {
+      doc.rect(currentX, currentY, columnWidths[i], rowHeight, 'S');
+      // Truncate text if too long
+      let text = String(cell);
+      if (text.length > 35 && i === 2) { // Match column
+        text = text.substring(0, 32) + '...';
+      }
+      doc.text(text, currentX + 2, currentY + 6);
+      currentX += columnWidths[i];
+    });
+    
+    currentY += rowHeight;
+  });
+};
 
 /**
  * Generate PDF with league fixtures (one page per league)
@@ -64,29 +128,9 @@ export const generateLeagueFixturesPDF = (fixtures, leagues, teams, currentSeaso
       ];
     });
 
-    // Generate table
-    doc.autoTable({
-      startY: 35,
-      head: [['Date', 'Time', 'Match', 'Venue']],
-      body: tableData,
-      theme: 'grid',
-      styles: {
-        fontSize: 10,
-        cellPadding: 3
-      },
-      headStyles: {
-        fillColor: [0, 167, 85], // Devon RFU green
-        textColor: 255,
-        fontStyle: 'bold'
-      },
-      columnStyles: {
-        0: { cellWidth: 30 },
-        1: { cellWidth: 20 },
-        2: { cellWidth: 80 },
-        3: { cellWidth: 60 }
-      },
-      margin: { left: 10, right: 10 }
-    });
+    // Generate table using custom drawing function
+    const columnWidths = [30, 20, 80, 60]; // Date, Time, Match, Venue
+    drawTable(doc, ['Date', 'Time', 'Match', 'Venue'], tableData, 35, columnWidths);
 
     // Footer
     const pageHeight = doc.internal.pageSize.height;

@@ -98,6 +98,9 @@ button:focus-visible {
   /* border: 1px solid #333;
   border-radius: 8px; */
   padding: 1.5rem;
+  max-width: 1400px; /* Match the width of Home and About pages */
+  margin: 0 auto; /* Center the content */
+  width: 100%; /* Full width up to max-width */
 }
 
 .title-block {

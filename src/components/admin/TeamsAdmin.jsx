@@ -36,6 +36,7 @@ import { crudRequest } from '../../utils/authHelpers';
  */
 function TeamsAdmin() {
   const [teams, setTeams] = useState([]);
+  const [leagues, setLeagues] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
@@ -43,12 +44,15 @@ function TeamsAdmin() {
   const [editingTeam, setEditingTeam] = useState(null);
   const [formData, setFormData] = useState({
     teamName: '',
+    teamClub: '',
+    playsIn: 0,
     teamLogo: ''
   });
   const [logoPreview, setLogoPreview] = useState('');
 
   useEffect(() => {
     fetchTeams();
+    fetchLeagues();
   }, []);
 
   /**
@@ -79,11 +83,34 @@ function TeamsAdmin() {
     }
   };
 
+  /**
+   * Fetches all leagues from database
+   * @async
+   * @description Loads leagues sorted by season and name
+   */
+  const fetchLeagues = async () => {
+    try {
+      const result = await crudRequest('read', {
+        table: 'tblleagues',
+        orderBy: 'leagueSeason DESC, leagueName ASC'
+      });
+
+      if (result.status_code === 200) {
+        const leagueData = result.data.records || result.data;
+        setLeagues(leagueData);
+      } else {
+        console.error('Failed to load leagues:', result.message);
+      }
+    } catch (err) {
+      console.error('Error fetching leagues:', err);
+    }
+  };
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
-      [name]: value
+      [name]: name === 'playsIn' ? parseInt(value) || 0 : value
     }));
   };
 
@@ -156,6 +183,8 @@ function TeamsAdmin() {
     setEditingTeam(null);
     setFormData({
       teamName: '',
+      teamClub: '',
+      playsIn: 0,
       teamLogo: ''
     });
     setLogoPreview('');
@@ -168,6 +197,8 @@ function TeamsAdmin() {
     setEditingTeam(team);
     setFormData({
       teamName: team.teamName,
+      teamClub: team.teamClub || '',
+      playsIn: team.playsIn || 0,
       teamLogo: team.teamLogo || ''
     });
     setLogoPreview(team.teamLogo || '');
@@ -273,6 +304,41 @@ function TeamsAdmin() {
                 required
                 placeholder="Enter team name"
               />
+            </div>
+            <div className="admin-form-group">
+              <label>Team Club *</label>
+              <input
+                type="text"
+                name="teamClub"
+                value={formData.teamClub}
+                onChange={handleInputChange}
+                required
+                placeholder="Enter team club"
+              />
+            </div>
+
+            <div className="admin-form-group">
+              <label>Plays In (League) *</label>
+              <select
+                name="playsIn"
+                value={formData.playsIn}
+                onChange={handleInputChange}
+                required
+                style={{
+                  padding: '8px',
+                  borderRadius: '4px',
+                  border: '1px solid #ccc',
+                  width: '100%',
+                  fontSize: '14px'
+                }}
+              >
+                <option value="0">-- Select a League --</option>
+                {leagues.map(league => (
+                  <option key={league.id} value={league.id}>
+                    {league.leagueName} ({league.leagueSeason})
+                  </option>
+                ))}
+              </select>
             </div>
 
             <div className="admin-form-group">

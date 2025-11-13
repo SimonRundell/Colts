@@ -9,6 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import { getUser } from '../utils/authHelpers';
 import UsersAdmin from '../components/admin/UsersAdmin';
 import TeamsAdmin from '../components/admin/TeamsAdmin';
+import LeaguesAdmin from '../components/admin/LeaguesAdmin';
 import FixturesAdmin from '../components/admin/FixturesAdmin';
 import ResultsAdmin from '../components/admin/ResultsAdmin';
 
@@ -51,8 +52,9 @@ function Admin() {
   const tabs = [
     { id: 'users', label: 'Users', icon: '👤' },
     { id: 'teams', label: 'Teams', icon: '🏉' },
+    { id: 'leagues', label: 'Leagues', icon: '🏆' },
     { id: 'fixtures', label: 'Fixtures', icon: '📅' },
-    { id: 'results', label: 'Results', icon: '🏆' }
+    { id: 'results', label: 'Results', icon: '📊' }
   ];
 
   return (
@@ -76,6 +78,7 @@ function Admin() {
         <div className="admin-content">
           {activeTab === 'users' && <UsersAdmin />}
           {activeTab === 'teams' && <TeamsAdmin />}
+          {activeTab === 'leagues' && <LeaguesAdmin />}
           {activeTab === 'fixtures' && <FixturesAdmin />}
           {activeTab === 'results' && <ResultsAdmin />}
         </div>

@@ -2,7 +2,7 @@
 
 A comprehensive web application for managing Devon RFU Colts rugby leagues, fixtures, results, and standings with automated email notifications for followers.
 
-Code by Simon Rundell, Dept of ITDD, Exeter College, November 2025
+Code by Simon Rundell, Dept of Cybersecurity and Digital Technologies, Exeter College, November 2025
 Documentation generated using Claude Sonnet 4.5
 simonrundell@exe-coll.ac.uk
 
